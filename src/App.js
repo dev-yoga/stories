@@ -36,8 +36,7 @@ const App = () => (
 
 const List = () => (
     <ul>
-      {list.map((item) => {
-        return (
+      {list.map((item) => (
           <li key={item.objectID}>
             <span>
               <a href={item.url}>{item.title}</a>
@@ -46,8 +45,7 @@ const List = () => (
             <span>{item.num_comments}</span>
             <span>{item.points}</span>
           </li>
-        );
-      })}
+      ))}
     </ul>
   );
 
