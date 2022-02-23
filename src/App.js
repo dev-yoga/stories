@@ -22,8 +22,9 @@ const App = () => {
         objectID: 1,
       }, 
   ];
-      return (
-    <div className="App">
+  
+  return (
+    <div>
       <h1>
         My Stories
       </h1>
@@ -64,11 +65,7 @@ const Search = () => {
   return (
     <div>
       <label htmlFor="search">Search: </label>
-      <input 
-      id="search" 
-      type="text" 
-      onChange={handleChange} 
-      />
+      <input id="search" type="text" onChange={handleChange} />
     </div>
   );
 };
