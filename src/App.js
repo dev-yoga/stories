@@ -46,7 +46,7 @@ const searchedStories = stories.filter((story)=>
 const Search = (props) => (
   <div>
     <label htmlFor="search">Search: </label>
-    <input id="search" type="text" onChange={props.OnSearch} />
+    <input id="search" type="text" onChange={props.onSearch} />
   </div>
 );
 
