@@ -1,6 +1,4 @@
 import * as React from 'react';
-import './App.css';
-
 
 const App = () => {
   const stories = [
@@ -22,24 +20,35 @@ const App = () => {
       }, 
   ];
   
-  const handleSearch = (event) => {
-    console.log(event.target.value);
+const [searchTerm, setSearchTerm] = React.useState('');
+
+const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
   };
+
+const searchedStories = stories.filter((story)=>
+    story.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div>
-      <h1>
-        My Stories
-      </h1>
+      <h1>My Stories</h1>
 
       <Search onSearch={handleSearch} />
 
       <hr />
 
-      <List list={stories} />
+      <List list={searchedStories} />
     </div>
   );
 };
+
+const Search = (props) => (
+  <div>
+    <label htmlFor="search">Search: </label>
+    <input id="search" type="text" onChange={props.OnSearch} />
+  </div>
+);
 
 const List = (props) => (
   <ul>
@@ -59,23 +68,5 @@ const Item = (props) => (
     <span>{props.item.points}</span>
   </li>
 );
-
-const Search = (props) => {
-  const [searchTerm, setSearchTerm] = React.useState('');
-  const handleChange = (event) => {
-    setSearchTerm(event.target.value);
-    props.onSearch(event);
-  };
-
-  return (
-    <div>
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleChange} />
-      <p>
-        Searching for <strong>{searchTerm}</strong>.
-      </p>
-    </div>
-  );
-};
 
 export default App;
