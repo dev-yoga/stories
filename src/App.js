@@ -43,7 +43,7 @@ const searchedStories = stories.filter((story)=>
   );
 };
 
-const Search = ({ search, onSearch }) => {
+const Search = ({ search, onSearch }) => (
   <div>
     <label htmlFor="search">Search: </label>
     <input
@@ -53,24 +53,24 @@ const Search = ({ search, onSearch }) => {
     onChange={onSearch}
     />
   </div>
-};
+);
 
-const List = (props) => (
+const List = ({ list }) => (
   <ul>
-    {props.list.map((item) => (
+    {list.map((item) => (
       <Item key={item.objectID} item={item} />
     ))}
   </ul>
 );
 
-const Item = (props) => (
+const Item = ({ item }) => (
   <li>
     <span>
-      <a href={props.item.url}>{props.item.title}</a>
+      <a href={item.url}>{item.title}</a>
     </span>
-    <span>{props.item.author}</span>
-    <span>{props.item.num_comments}</span>
-    <span>{props.item.points}</span>
+    <span>{item.author}</span>
+    <span>{item.num_comments}</span>
+    <span>{item.points}</span>
   </li>
 );
 
