@@ -12,12 +12,9 @@ const useSemiPersistentState = (key, initialState) => {
   return [value, setValue];
 };
 
-
-
   const App = () => {
-
-  const stories = [
-    {
+    const stories = [
+      {
         title: 'React',
         url: 'https://reactjs.org/',
         author: 'Jordan Walke',
@@ -33,9 +30,12 @@ const useSemiPersistentState = (key, initialState) => {
         points: 5,
         objectID: 1,
       }, 
-  ];
+    ];
   
-const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'React');
+  const [searchTerm, setSearchTerm] = useSemiPersistentState(
+    'search', 
+    'React'
+  );
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -51,11 +51,9 @@ const searchedStories = stories.filter((story)=>
 
         <InputWithLabel
           id="search"
-          label="Search"
           value={searchTerm}
           onInputChange={handleSearch}
         >
-
           <strong>Search:</strong>
           </InputWithLabel>
 
@@ -66,7 +64,13 @@ const searchedStories = stories.filter((story)=>
   );
 };
 
-const InputWithLabel = ({ id, value, type = 'text', onInputChange, children }) => (
+const InputWithLabel = ({ 
+  id, 
+  value, 
+  type = 'text', 
+  onInputChange, 
+  children 
+}) => (
   <>
   <label htmlFor={id}>{children}</label>
   &nbsp;
@@ -77,7 +81,7 @@ const InputWithLabel = ({ id, value, type = 'text', onInputChange, children }) =
     onChange={onInputChange}
     />  
   </>
-)
+);
 
 const List = ({ list }) => (
   <ul>
