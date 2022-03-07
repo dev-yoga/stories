@@ -13,7 +13,7 @@ const useSemiPersistentState = (key, initialState) => {
 };
 
   const App = () => {
-    const stories = [
+    const initialStories = [
       {
         title: 'React',
         url: 'https://reactjs.org/',
@@ -37,6 +37,8 @@ const useSemiPersistentState = (key, initialState) => {
     'React'
   );
 
+  const [stories, setStories] = React.useState(initialStories);
+  
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
