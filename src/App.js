@@ -38,7 +38,17 @@ const useSemiPersistentState = (key, initialState) => {
   );
 
   const [stories, setStories] = React.useState(initialStories);
-  
+
+
+
+  const handleRemoveStory = (item) => {
+    const newStories = stories.filter(
+      (story) => item.objectID !== story.objectID
+  );
+
+    setStories(newStories);
+  };
+
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -62,7 +72,7 @@ const searchedStories = stories.filter((story)=>
 
       <hr />
 
-      <List list={searchedStories} />
+      <List list={searchedStories} onRemoveItem={handleRemoveStory} />
     </div>
   );
 };
