@@ -19,6 +19,9 @@ const initialStories = [
   },
 ];
 
+const getAsyncStories = () =>
+Promise.resolve({ data: { stories: initialStories } });
+
 const useSemiPersistentState = (key, initialState) => {
   const [value, setValue] = React.useState(
     localStorage.getItem(key) || initialState
@@ -37,7 +40,13 @@ const App = () => {
     'React'
   );
 
-  const [stories, setStories] = React.useState(initialStories);
+  const [stories, setStories] = React.useState([]);
+
+  React.useEffect(() => {
+    getAsyncStories().then(result => {
+      setStories(result.data.stories);
+    });
+  }, []);
 
   const handleRemoveStory = (item) => {
     const newStories = stories.filter(
