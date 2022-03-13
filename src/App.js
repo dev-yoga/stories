@@ -38,6 +38,14 @@ const useSemiPersistentState = (key, initialState) => {
 
   return [value, setValue];
 };
+    
+const storiesReducer = (state, action) => {
+  if (action.type === 'SET_STORIES') {
+    return action.payload;
+  } else {
+    throw new Error();
+  }
+};
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useSemiPersistentState(
@@ -45,7 +53,7 @@ const App = () => {
     'React'
   );
 
-  const [stories, setStories] = React.useState([]);
+  const [stories, dispatchStories] = React.useReducer(storiesReducer,[]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
 
@@ -54,9 +62,12 @@ const App = () => {
 
     getAsyncStories()
       .then(result => {
-      setStories(result.data.stories);
-      setIsLoading(false);
-    })
+      dispatchStories({
+        type: 'SET_STORIES',
+        payload: result.data.stories,
+    });
+    setIsLoading(false);
+  })
     .catch(() => setIsError(true));
   }, []);
 
