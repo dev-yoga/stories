@@ -40,7 +40,6 @@ const useSemiPersistentState = (key, initialState) => {
 };
     
 const storiesReducer = (state, action) => {
-//refactor to switch statement
   switch (action.type) {
     case 'SET_STORIES':
       return action.payload;
@@ -59,7 +58,10 @@ const App = () => {
     'React'
   );
 
-  const [stories, dispatchStories] = React.useReducer(storiesReducer,[]);
+  const [stories, dispatchStories] = React.useReducer(
+    storiesReducer,
+    []
+  );
   const [isLoading, setIsLoading] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
 
@@ -108,12 +110,14 @@ const App = () => {
       <hr />
 
       {isError && <p>Something went wrong ...</p>}
+
       {isLoading ? (
         <p>Loading ...</p>
       ) : (
-
-
-      <List list={searchedStories} onRemoveItem={handleRemoveStory} />
+      <List 
+      list={searchedStories} 
+      onRemoveItem={handleRemoveStory} 
+      />
       )}
     </div>
   );
