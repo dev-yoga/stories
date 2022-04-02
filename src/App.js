@@ -24,8 +24,8 @@ const getAsyncStories = () =>
     setTimeout(
       () => resolve({ data: { stories: initialStories } }),
       2000
-  )
-);
+    )
+  );
 
 const useSemiPersistentState = (key, initialState) => {
   const [value, setValue] = React.useState(
@@ -38,17 +38,37 @@ const useSemiPersistentState = (key, initialState) => {
 
   return [value, setValue];
 };
-    
+
 const storiesReducer = (state, action) => {
   switch (action.type) {
-    case 'SET_STORIES':
-      return action.payload;
+    case 'STORIES_FETCH_INIT':
+      return {
+        ...state,
+        isLoading: true,
+        isError: false,
+      };
+    case 'STORIES_FETCH_SUCCESS':
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        data: action.payload,
+      };
+    case 'STORIES_FETCH_FAILURE':
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
     case 'REMOVE_STORY':
-      return state.filter(
-        (story) => action.payload.objectOD !== story.objectID
-      );
-      default:
-        throw new Error();
+      return {
+        ...state,
+        data: state.data.filter(
+          (story) => action.payload.objectID !== story.objectID
+        ),
+      };
+    default:
+      throw new Error();
   }
 };
 
@@ -60,23 +80,22 @@ const App = () => {
 
   const [stories, dispatchStories] = React.useReducer(
     storiesReducer,
-    []
+    { data: [], isLoading: false, isError: false }
   );
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [isError, setIsError] = React.useState(false);
 
   React.useEffect(() => {
-    setIsLoading(true);
+    dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
     getAsyncStories()
-      .then(result => {
-      dispatchStories({
-        type: 'SET_STORIES',
-        payload: result.data.stories,
-    });
-    setIsLoading(false);
-  })
-    .catch(() => setIsError(true));
+      .then((result) => {
+        dispatchStories({
+          type: 'STORIES_FETCH_SUCCESS',
+          payload: result.data.stories,
+        });
+      })
+      .catch(() =>
+        dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
+      );
   }, []);
 
   const handleRemoveStory = (item) => {
@@ -90,13 +109,13 @@ const App = () => {
     setSearchTerm(event.target.value);
   };
 
-  const searchedStories = stories.filter((story) =>
+  const searchedStories = stories.data.filter((story) =>
     story.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div>
-      <h1>My Stories</h1>
+      <h1>My Hacker Stories</h1>
 
       <InputWithLabel
         id="search"
@@ -109,15 +128,15 @@ const App = () => {
 
       <hr />
 
-      {isError && <p>Something went wrong ...</p>}
+      {stories.isError && <p>Something went wrong ...</p>}
 
-      {isLoading ? (
+      {stories.isLoading ? (
         <p>Loading ...</p>
       ) : (
-      <List 
-      list={searchedStories} 
-      onRemoveItem={handleRemoveStory} 
-      />
+        <List
+          list={searchedStories}
+          onRemoveItem={handleRemoveStory}
+        />
       )}
     </div>
   );
