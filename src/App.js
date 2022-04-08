@@ -109,10 +109,7 @@ const App = () => {
       {stories.isLoading ? (
         <p>Loading ...</p>
       ) : (
-        <List
-          list={searchedStories}
-          onRemoveItem={handleRemoveStory}
-        />
+        <List list={stories.data}onRemoveItem={handleRemoveStory} />
       )}
     </div>
   );
